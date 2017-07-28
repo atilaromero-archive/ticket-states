@@ -1,7 +1,6 @@
 {
   "name": "ticket-states",
   "version": "1.0.0",
-  "private": true,
   "description": "Decentralized polite tickets, using events and a finite state machine",
   "homepage": "https://github.com/atilaromero/ticket-states",
   "bugs": "https://github.com/atilaromero/ticket-states/issues",
@@ -9,6 +8,7 @@
   "author": "Atila Romero",
   "license": "MIT",
   "main": "index.js",
+  "repository": "atilaromero/ticket-states",
   "dependencies": {
     "debug": "^2.6.8",
     "stately.js": "^1.3.0",
