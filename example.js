@@ -30,6 +30,8 @@ class MyStates extends TicketStates {
         this[message.event](message)
       }
     })
+    this.onMINE = () => { console.log(chair, 'MINE') }
+    this.onOTHERS = () => { console.log(chair, 'OTHERS') }
     this.init()
   }
 }
@@ -38,9 +40,3 @@ const a1 = new MyStates('A')
 const a2 = new MyStates('A')
 const a3 = new MyStates('A')
 const b4 = new MyStates('B')
-setTimeout(() => {
-  console.log('a1', a1.getMachineState())
-  console.log('a2', a2.getMachineState())
-  console.log('a3', a3.getMachineState())
-  console.log('b4', b4.getMachineState())
-}, 5000)
