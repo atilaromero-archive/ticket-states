@@ -1,0 +1,23 @@
+{
+  "name": "ticket-states",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Decentralized polite tickets",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "example.js",
+  "dependencies": {
+    "debug": "^2.6.8",
+    "stately.js": "^1.3.0",
+    "uniqid": "^4.1.1"
+  },
+  "devDependencies": {
+    "standard": "^10.0.2"
+  },
+  "scripts": {
+    "start": "node example.js",
+    "fix": "standard --fix",
+    "test": "standard"
+  }
+}
