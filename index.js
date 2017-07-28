@@ -8,7 +8,6 @@ class TicketStates extends Stately {
   constructor (readMessageSync, postMessage) {
     super({
       'ENABLED': {
-        'ticket enabled': 'ENABLED',
         'ticket reserving': (message) => {
           const details = readMessageSync(message)
           debug(details)
@@ -52,6 +51,14 @@ class TicketStates extends Stately {
             return 'FAILED'
           }
         },
+        'ticket giveup': (message) => {
+          const details = readMessageSync(message)
+          debug(details)
+          this.reserving = this.reserving.filter((x) => x !== details.instanceid)
+          if (this.reserving.length === 0) {
+            return 'ENABLED'
+          }
+        },
         'ticket done': 'DONE'
       },
       'OTHERS': {
@@ -72,19 +79,23 @@ class TicketStates extends Stately {
     })
     this.reserving = []
     this.instanceid = uniqid()
-    this.init = () => {
-      const waitTime = Math.random() * this.waitTime + this.waitTime
-      this.waitUnchanged(waitTime, (err) => {
-        if (err) { return }
-        postMessage('ticket reserving', this)
-      })
+    this.enabled = false
+    this.enable = () => {
+      this.enabled = true
+      if (this.getMachineState() === 'ENABLED') {
+        const waitTime = Math.random() * this.waitTime + this.waitTime
+        this.waitUnchanged(waitTime, (err) => {
+          if (err) { return }
+          postMessage('ticket reserving', this)
+        })
+      }
     }
     this.bind((event, oldState, newState) => {
       debug({event: event, oldState: oldState, newState: newState})
     })
     this.bind((event, oldState, newState) => {
-      if (newState === 'ENABLED') {
-        this.init()
+      if (newState === 'ENABLED' && this.enabled) {
+        this.enable()
       }
     })
     this.bind((event, oldState, newState) => {
@@ -100,7 +111,11 @@ class TicketStates extends Stately {
             return postMessage('ticket giveup', this)
           } else {
             debug('got ticket', this.instanceid)
-            return postMessage('ticket claim', this)
+            if (this.enabled) {
+              return postMessage('ticket claim', this)
+            } else {
+              return postMessage('ticket giveup', this)
+            }
           }
         })
       }

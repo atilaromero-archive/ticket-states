@@ -1,6 +1,6 @@
 {
   "name": "ticket-states",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Decentralized polite tickets, using events and a finite state machine",
   "homepage": "https://github.com/atilaromero/ticket-states",
   "bugs": "https://github.com/atilaromero/ticket-states/issues",
